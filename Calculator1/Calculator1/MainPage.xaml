@@ -5,8 +5,50 @@
              x:Class="Calculator1.MainPage">
 
     <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Label Grid.Column="0" Grid.Row="0" Text="Number1"/>
+        <Entry Grid.Column="0" Grid.Row="1" Text="{Binding Entry_Number1}" />
         
+        <Label Grid.Column="1" Grid.Row="0" Text="Operation"/>
+        <Label Grid.Column="1" Grid.Row="1" Text="{Binding Label_Operation}"/>
         
+        <Label Grid.Column="2" Grid.Row="0" Text="Number2"/>
+        <Entry Grid.Column="2" Grid.Row="1" Text="{Binding Entry_Number2}"/>
+        
+        <Label Grid.Column="3" Grid.Row="1" Text="="/>
+        <Label Grid.Column="4" Grid.Row="1" Text="{Binding Label_Result}"/>
+
+        <Button Text="1" Grid.Column="0" Grid.Row="2" Command="{Binding Button_One}" />
+        <Button Text="2" Grid.Column="1" Grid.Row="2" Command="{Binding Button_Two}" />
+        <Button Text="3" Grid.Column="2" Grid.Row="2" Command="{Binding Button_Three}" />
+        <Button Text="4" Grid.Column="0" Grid.Row="3" Command="{Binding Button_Four}" />
+        <Button Text="5" Grid.Column="1" Grid.Row="3" Command="{Binding Button_Five}" />
+        <Button Text="6" Grid.Column="2" Grid.Row="3" Command="{Binding Button_Six}" />
+        <Button Text="7" Grid.Column="0" Grid.Row="4" Command="{Binding Button_Seven}" />
+        <Button Text="8" Grid.Column="1" Grid.Row="4" Command="{Binding Button_Eight}" />
+        <Button Text="9" Grid.Column="2" Grid.Row="4" Command="{Binding Button_Nine}" />
+        <Button Text="0" Grid.Column="1" Grid.Row="5" Command="{Binding Button_Zero}" />
+
+        <Button Text="+" Grid.Column="3" Grid.Row="5" Command="{Binding Button_Plus}"/>
+        <Button Text="-" Grid.Column="3" Grid.Row="4" Command="{Binding Button_Minus}"/>
+        <Button Text="/" Grid.Column="3" Grid.Row="3" Command="{Binding Button_Divid}"/>
+        <Button Text="x" Grid.Column="3" Grid.Row="2" Command="{Binding Button_Multiply}"/>
 
     </Grid>
 
