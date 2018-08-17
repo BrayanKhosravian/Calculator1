@@ -12,73 +12,67 @@ namespace Calculator1.ViewModels
 {
     class MainPageViewModel : BaseViewModel
     {
-        public ICommand Button_Plus { get; private set; }
-        public ICommand Button_Minus { get; private set; }
-        public ICommand Button_Divid { get; private set; }
-        public ICommand Button_Multiply { get; private set; }
+        public ICommand Command_AddNumber { get; private set; }
+        public ICommand Command_AddOperator { get; private set; }
+        public ICommand Command_Clear { get; private set; }
+        public ICommand Command_Delete { get; private set; }
 
-        public ICommand Button_Delete { get; private set; }
-        public ICommand Button_Clear { get; private set; }
-
-        public ICommand Button_One { get; private set; } 
-        public ICommand Button_Two { get; private set; }
-        public ICommand Button_Three { get; private set; }
-        public ICommand Button_Four  { get; private set; }
-        public ICommand Button_Five  { get; private set; }
-        public ICommand Button_Six   { get; private set; }
-        public ICommand Button_Seven { get; private set; }
-        public ICommand Button_Eight { get; private set; }
-        public ICommand Button_Nine  { get; private set; }
-        public ICommand Button_Zero  { get; private set; }
-
+        // Ctor ---------------------------------------------------------------
         public MainPageViewModel()
         {
-            Button_Plus = new Command(x => Entry_Input += " + ");
-            Button_Minus = new Command(x => Entry_Input += " - ");
-            Button_Divid = new Command(x => Entry_Input += " / ");
-            Button_Multiply = new Command(x => Entry_Input += " * ");
-
-            Button_Clear = new Command(x => Entry_Input = string.Empty);
-            Button_Delete = new Command(x =>
-            {
-                if (!string.IsNullOrEmpty(entry_Input) && entry_Input[entry_Input.Length - 1] == ' ')
+            Command_AddNumber = new Command<string>(
+                execute: (string param) =>
                 {
-                    Entry_Input = Entry_Input.Remove(Entry_Input.Length - 3, 3);
-                }
-                else if (!string.IsNullOrEmpty(entry_Input))
-                    Entry_Input = Entry_Input.Remove(entry_Input.Length - 1, 1);
-            });
+                    Entry_Input += param;
+                    RefreshCanExecutes();
+                });
 
-            Button_One = new Command<string>(x => AddNumb("1"));
-            Button_Two = new Command(x => Entry_Input += "2");
-            Button_Three = new Command(x => Entry_Input += "3");
-            Button_Four = new Command(x => Entry_Input += "4");
-            Button_Five = new Command(x => Entry_Input += "5");
-            Button_Six = new Command(x => Entry_Input += "6");
-            Button_Seven = new Command(x => Entry_Input += "7");
-            Button_Eight = new Command(x => Entry_Input += "8");
-            Button_Nine = new Command(x => Entry_Input += "9");
-            Button_Zero = new Command(x => Entry_Input += "0");
+            Command_AddOperator = new Command<string>(
+                execute: (string param) =>
+                {
+                    Entry_Input += param;
+                    RefreshCanExecutes();
+                },
+                canExecute: (string param) =>
+                {
+                    if (string.IsNullOrEmpty(Entry_Input)) return false;
+                    if (char.IsDigit(Entry_Input[Entry_Input.Length - 1])) return true;
+                    else return false;
+                });
 
-            void AddNumb(string numb)
-            {
-                Entry_Input += numb;
-            }
 
-        } // ctor End
+            Command_Clear = new Command(
+                execute: () =>
+                {
+                    Entry_Input = string.Empty;
+                    RefreshCanExecutes();
+                },
+                canExecute: () =>
+                {
+                    if (string.IsNullOrEmpty(Entry_Input)) return false;
+                    else return true;
+                });
 
-        private void SetOutput(string entry)
-        {
-            MathParser mathParser = new MathParser();
-            if (!string.IsNullOrEmpty(entry) && char.IsDigit(entry[entry.Length - 1]))
-            {
-                Label_Output = mathParser.Parse(entry).ToString();
-            }
-            else
-            {
-                Label_Output = "Error";
-            }
-        }
+            Command_Delete = new Command(
+                execute: () =>
+                {
+                    if (!string.IsNullOrEmpty(entry_Input) && entry_Input[entry_Input.Length - 1] == ' ')
+                    {
+                        Entry_Input = Entry_Input.Remove(Entry_Input.Length - 3, 3);
+                    }
+                    else if (!string.IsNullOrEmpty(entry_Input))
+                        Entry_Input = Entry_Input.Remove(entry_Input.Length - 1, 1);
+
+                    RefreshCanExecutes();
+                }, 
+                canExecute: () =>
+                {
+                    if (string.IsNullOrEmpty(Entry_Input)) return false;
+                    else return true;
+                });
+
+        } // ctor End ----------------------------------------------------------------------
+
         
         private string label_Output;
         public string Label_Output
@@ -108,11 +102,26 @@ namespace Calculator1.ViewModels
             }
         }
 
-        private bool CanExecute(object parameter)
+        [MethodImpl(MethodImplOptions.AggressiveInlining)] // this method is only executed inline // this attribute can be delted its just for performance
+        private void SetOutput(string entry)
         {
-            var i = parameter as string;
-            if (!string.IsNullOrEmpty(entry_Input)) return true;
-            else return false;
+            MathParser mathParser = new MathParser();
+            if (!string.IsNullOrEmpty(entry) && char.IsDigit(entry[entry.Length - 1]))
+            {
+                Label_Output = mathParser.Parse(entry).ToString();
+            }
+            else
+            {
+                Label_Output = "Error";
+            }
+        }
+
+        private void RefreshCanExecutes()
+        {
+            ((Command)Command_AddNumber).ChangeCanExecute();
+            ((Command)Command_AddOperator).ChangeCanExecute(); 
+            ((Command)Command_Clear).ChangeCanExecute();
+            ((Command)Command_Delete).ChangeCanExecute();
         }
     }
 }

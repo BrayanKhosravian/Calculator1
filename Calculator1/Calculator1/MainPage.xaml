@@ -25,24 +25,24 @@
         <Label Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="0"  Text="{Binding Label_Output}" BackgroundColor="Gray"/>
         <Entry Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="1" Text="{Binding Entry_Input}" Keyboard="Numeric"/>
         
-        <Button Text="del." Grid.Column="4" Grid.Row="2" Command="{Binding Button_Delete}"/>
-        <Button Text="clear" Grid.Column="4" Grid.Row="3" Command="{Binding Button_Clear}"/>
+        <Button Text="del." Grid.Column="4" Grid.Row="2" Command="{Binding Command_Delete}" BackgroundColor="Gray"/>
+        <Button Text="clear" Grid.Column="4" Grid.Row="3" Command="{Binding Command_Clear}" BackgroundColor="Gray"/>
 
-        <Button Text="1" Grid.Column="0" Grid.Row="2" Command="{Binding Button_One}" />
-        <Button Text="2" Grid.Column="1" Grid.Row="2" Command="{Binding Button_Two}" />
-        <Button Text="3" Grid.Column="2" Grid.Row="2" Command="{Binding Button_Three}" />
-        <Button Text="4" Grid.Column="0" Grid.Row="3" Command="{Binding Button_Four}" />
-        <Button Text="5" Grid.Column="1" Grid.Row="3" Command="{Binding Button_Five}" />
-        <Button Text="6" Grid.Column="2" Grid.Row="3" Command="{Binding Button_Six}" />
-        <Button Text="7" Grid.Column="0" Grid.Row="4" Command="{Binding Button_Seven}" />
-        <Button Text="8" Grid.Column="1" Grid.Row="4" Command="{Binding Button_Eight}" />
-        <Button Text="9" Grid.Column="2" Grid.Row="4" Command="{Binding Button_Nine}" />
-        <Button Text="0" Grid.Column="1" Grid.Row="5" Command="{Binding Button_Zero}" />
+        <Button Text="1" Grid.Column="0" Grid.Row="2" Command="{Binding Command_AddNumber}" CommandParameter="1"/>
+        <Button Text="2" Grid.Column="1" Grid.Row="2" Command="{Binding Command_AddNumber}" CommandParameter="2"/>
+        <Button Text="3" Grid.Column="2" Grid.Row="2" Command="{Binding Command_AddNumber}" CommandParameter="3"/>
+        <Button Text="4" Grid.Column="0" Grid.Row="3" Command="{Binding Command_AddNumber}" CommandParameter="4"/>
+        <Button Text="5" Grid.Column="1" Grid.Row="3" Command="{Binding Command_AddNumber}" CommandParameter="5"/>
+        <Button Text="6" Grid.Column="2" Grid.Row="3" Command="{Binding Command_AddNumber}" CommandParameter="6"/>
+        <Button Text="7" Grid.Column="0" Grid.Row="4" Command="{Binding Command_AddNumber}" CommandParameter="7"/>
+        <Button Text="8" Grid.Column="1" Grid.Row="4" Command="{Binding Command_AddNumber}" CommandParameter="8"/>
+        <Button Text="9" Grid.Column="2" Grid.Row="4" Command="{Binding Command_AddNumber}" CommandParameter="9"/>
+        <Button Text="0" Grid.Column="1" Grid.Row="5" Command="{Binding Command_AddNumber}" CommandParameter="0"/>
 
-        <Button Text="+" Grid.Column="3" Grid.Row="5" Command="{Binding Button_Plus}"/>
-        <Button Text="-" Grid.Column="3" Grid.Row="4" Command="{Binding Button_Minus}"/>
-        <Button Text="/" Grid.Column="3" Grid.Row="3" Command="{Binding Button_Divid}"/>
-        <Button Text="x" Grid.Column="3" Grid.Row="2" Command="{Binding Button_Multiply}"/>
+        <Button Text="-" Grid.Column="3" Grid.Row="5" Command="{Binding Command_AddOperator}" CommandParameter=" - " BackgroundColor="OrangeRed"/>
+        <Button Text="+" Grid.Column="3" Grid.Row="4" Command="{Binding Command_AddOperator}" CommandParameter=" + " BackgroundColor="OrangeRed"/>
+        <Button Text="/" Grid.Column="3" Grid.Row="3" Command="{Binding Command_AddOperator}" CommandParameter=" / " BackgroundColor="OrangeRed"/>
+        <Button Text="x" Grid.Column="3" Grid.Row="2" Command="{Binding Command_AddOperator}" CommandParameter=" * " BackgroundColor="OrangeRed"/>
 
     </Grid>
 
