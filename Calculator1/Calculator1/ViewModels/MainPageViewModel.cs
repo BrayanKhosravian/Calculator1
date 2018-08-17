@@ -1,113 +1,118 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Runtime.CompilerServices;
 using System.Text;
+using System.Text.RegularExpressions;
 using System.Windows.Input;
+using Calculator1.Extentions;
 using Xamarin.Forms;
+using Xamarin.Forms.PlatformConfiguration;
 
 namespace Calculator1.ViewModels
 {
     class MainPageViewModel : BaseViewModel
     {
-        private string entry_Number1;
-        private string entry_Number2;
-        private string label_Operation;
-        private string label_Result;
-
-        private char _operation;
-
         public ICommand Button_Plus { get; private set; }
         public ICommand Button_Minus { get; private set; }
-        public  ICommand Button_Divid { get; private set; }
+        public ICommand Button_Divid { get; private set; }
         public ICommand Button_Multiply { get; private set; }
 
+        public ICommand Button_Delete { get; private set; }
+        public ICommand Button_Clear { get; private set; }
+
+        public ICommand Button_One { get; private set; } 
+        public ICommand Button_Two { get; private set; }
+        public ICommand Button_Three { get; private set; }
+        public ICommand Button_Four  { get; private set; }
+        public ICommand Button_Five  { get; private set; }
+        public ICommand Button_Six   { get; private set; }
+        public ICommand Button_Seven { get; private set; }
+        public ICommand Button_Eight { get; private set; }
+        public ICommand Button_Nine  { get; private set; }
+        public ICommand Button_Zero  { get; private set; }
 
         public MainPageViewModel()
         {
-            Button_Plus = new Command(x =>
-            {
-                _operation = '+';
-                base.OnPropertyChanged(nameof(Label_Operation));
-                base.OnPropertyChanged(nameof(Label_Result));
-            });
-            Button_Minus = new Command(x =>
-            {
-                _operation = '-';
-                base.OnPropertyChanged(nameof(Label_Operation));
-                base.OnPropertyChanged(nameof(Label_Result));
-            });
-            Button_Divid = new Command(x =>
-            {
-                _operation = '/';
-                base.OnPropertyChanged(nameof(Label_Operation));
-                base.OnPropertyChanged(nameof(Label_Result));
-            });
-            Button_Multiply = new Command(x =>
-            {
-                _operation = '*';
-                base.OnPropertyChanged(nameof(Label_Operation));
-                base.OnPropertyChanged(nameof(Label_Result));
-            });
-        }
+            Button_Plus = new Command(x => Entry_Input += " + ");
+            Button_Minus = new Command(x => Entry_Input += " - ");
+            Button_Divid = new Command(x => Entry_Input += " / ");
+            Button_Multiply = new Command(x => Entry_Input += " * ");
 
-        public string Entry_Number1
-        {
-            get => entry_Number1;
-            set
+            Button_Clear = new Command(x => Entry_Input = string.Empty);
+            Button_Delete = new Command(x =>
             {
-                if (entry_Number1 != value) entry_Number1 = value;
-                else return;
-
-                base.OnPropertyChanged();
-                base.OnPropertyChanged(nameof(Label_Result));
-            }
-        }
-
-        public string Entry_Number2
-        {
-            get => entry_Number2;
-            set
-            {
-                if (entry_Number2 != value) entry_Number2 = value;
-                else return;
-
-                base.OnPropertyChanged();
-                base.OnPropertyChanged(nameof(Label_Result));
-            }
-        }
-
-        
-        public string Label_Operation
-        {
-            get => _operation.ToString();
-            set
-            {
-                if (label_Operation != value) label_Operation = value;
-                else return;
-
-                base.OnPropertyChanged();
-            }
-        }
-        
-        public string Label_Result
-        {
-            get
-            {
-                if (entry_Number1 != null && entry_Number2 != null)
+                if (!string.IsNullOrEmpty(entry_Input) && entry_Input[entry_Input.Length - 1] == ' ')
                 {
-                    if (_operation.Equals('+')) return (double.Parse(entry_Number1) + double.Parse(entry_Number2)).ToString();
-                    else if (_operation.Equals('-')) return (double.Parse(entry_Number1) - double.Parse(entry_Number2)).ToString();
-                    else if (_operation.Equals('/')) return (double.Parse(entry_Number1) / double.Parse(entry_Number2)).ToString();
-                    else if (_operation.Equals('*')) return (double.Parse(entry_Number1) * double.Parse(entry_Number2)).ToString();
+                    Entry_Input = Entry_Input.Remove(Entry_Input.Length - 3, 3);
                 }
-                return "0";
+                else if (!string.IsNullOrEmpty(entry_Input))
+                    Entry_Input = Entry_Input.Remove(entry_Input.Length - 1, 1);
+            });
+
+            Button_One = new Command<string>(x => AddNumb("1"));
+            Button_Two = new Command(x => Entry_Input += "2");
+            Button_Three = new Command(x => Entry_Input += "3");
+            Button_Four = new Command(x => Entry_Input += "4");
+            Button_Five = new Command(x => Entry_Input += "5");
+            Button_Six = new Command(x => Entry_Input += "6");
+            Button_Seven = new Command(x => Entry_Input += "7");
+            Button_Eight = new Command(x => Entry_Input += "8");
+            Button_Nine = new Command(x => Entry_Input += "9");
+            Button_Zero = new Command(x => Entry_Input += "0");
+
+            void AddNumb(string numb)
+            {
+                Entry_Input += numb;
             }
+
+        } // ctor End
+
+        private void SetOutput(string entry)
+        {
+            MathParser mathParser = new MathParser();
+            if (!string.IsNullOrEmpty(entry) && char.IsDigit(entry[entry.Length - 1]))
+            {
+                Label_Output = mathParser.Parse(entry).ToString();
+            }
+            else
+            {
+                Label_Output = "Error";
+            }
+        }
+        
+        private string label_Output;
+        public string Label_Output
+        {
+            get => label_Output;
             set
             {
-                if (label_Result != value) label_Result = value;
+                if (label_Output != value) label_Output = value;
                 else return;
 
                 base.OnPropertyChanged();
             }
+        }
+
+        private string entry_Input;
+        public string Entry_Input
+        {
+            get => entry_Input;
+            set
+            {
+                if (entry_Input != value) entry_Input = value;
+                else return;
+
+                SetOutput(Regex.Replace(entry_Input, " ", ""));
+
+                base.OnPropertyChanged();
+            }
+        }
+
+        private bool CanExecute(object parameter)
+        {
+            var i = parameter as string;
+            if (!string.IsNullOrEmpty(entry_Input)) return true;
+            else return false;
         }
     }
 }

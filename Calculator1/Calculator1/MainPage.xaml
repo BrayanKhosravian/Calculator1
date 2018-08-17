@@ -22,17 +22,11 @@
             <RowDefinition Height="*"/>
         </Grid.RowDefinitions>
 
-        <Label Grid.Column="0" Grid.Row="0" Text="Number1"/>
-        <Entry Grid.Column="0" Grid.Row="1" Text="{Binding Entry_Number1}" />
+        <Label Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="0"  Text="{Binding Label_Output}" BackgroundColor="Gray"/>
+        <Entry Grid.Column="0" Grid.ColumnSpan="5" Grid.Row="1" Text="{Binding Entry_Input}" Keyboard="Numeric"/>
         
-        <Label Grid.Column="1" Grid.Row="0" Text="Operation"/>
-        <Label Grid.Column="1" Grid.Row="1" Text="{Binding Label_Operation}"/>
-        
-        <Label Grid.Column="2" Grid.Row="0" Text="Number2"/>
-        <Entry Grid.Column="2" Grid.Row="1" Text="{Binding Entry_Number2}"/>
-        
-        <Label Grid.Column="3" Grid.Row="1" Text="="/>
-        <Label Grid.Column="4" Grid.Row="1" Text="{Binding Label_Result}"/>
+        <Button Text="del." Grid.Column="4" Grid.Row="2" Command="{Binding Button_Delete}"/>
+        <Button Text="clear" Grid.Column="4" Grid.Row="3" Command="{Binding Button_Clear}"/>
 
         <Button Text="1" Grid.Column="0" Grid.Row="2" Command="{Binding Button_One}" />
         <Button Text="2" Grid.Column="1" Grid.Row="2" Command="{Binding Button_Two}" />
